@@ -6,30 +6,40 @@ module.exports = {
   // Controlador para crear un nuevo usuario
   createUser : async (req, res) => {
     try {
-      // Extraer los datos del cuerpo de la solicitud
-      const { name, lastName, age, documentNumber, typeDocument, mail, password, role } = req.body;
-
-      // Crear una nueva instancia de User
-      const newUser = new User({
+      const { name, lastName, birthdate, documentNumber, typeDocument, mail, password, role } = req.body;
+  
+      // Verificar si el correo electrónico ya está registrado
+      const existingUser = await User.findOne({ mail });
+      if (existingUser) {
+        return res.status(400).json({ error: 'El correo electrónico ya está registrado' });
+      }
+  
+      // Verificar si la fecha de nacimiento es mayor a la fecha actual
+      const currentDate = new Date();
+      if (birthdate > currentDate) {
+        return res.status(400).json({ error: 'La fecha de nacimiento no puede ser mayor a la fecha actual' });
+      }
+  
+      // Establecer el valor predeterminado del rol si no se proporciona
+      const defaultRole = 'Usuario';
+      const userRole = role || defaultRole;
+  
+      const user = new User({
         name,
         lastName,
-        age,
+        birthdate,
         documentNumber,
         typeDocument,
         mail,
         password,
-        role
+        role: userRole
       });
-
-      // Guardar la nueva instancia en la base de datos
-      await newUser.save();
-
-      // Respuesta exitosa con el objeto creado
-      res.status(201).json(newUser);
+  
+      const result = await user.save();
+  
+      return res.status(201).json({ data: result });
     } catch (err) {
-      // Manejo de errores
-      console.error(err);
-      res.status(400).json({ error: 'Error al crear el usuario' });
+      return res.status(500).json({ err: err });
     }
   },
 
