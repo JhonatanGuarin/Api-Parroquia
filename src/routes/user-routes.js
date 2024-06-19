@@ -8,15 +8,15 @@ const {
 } = require('../controllers/controll-users');
 
 // Ruta para crear un nuevo usuario
-router.post('/', createUser);
+router.post('/register', createUser);
 
 // Ruta para obtener todos los usuarios
-router.get('/', getAllUsers);
+router.get('/users', getAllUsers);
 
 // Ruta para actualizar un usuario por ID
-router.put('/:id', updateUserById);
+router.put('/users:id', updateUserById);
 
 // Ruta para eliminar un usuario por ID
-router.delete('/:id', deleteUserById);
+router.delete('/users:id', deleteUserById);
 
 module.exports = router;

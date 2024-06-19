@@ -1,15 +1,13 @@
 const express = require('express');
 const router = express.Router();
+
 const {
-  createDocumentType,
-  getAllDocumentTypes,
-  updateDocumentTypeById,
-  deleteDocumentTypeById
+  getDocuments,
+  createDocumentType
 } = require('../controllers/controll-documentType');
 
-router.post('/', createDocumentType);
-router.get('/', getAllDocumentTypes);
-router.put('/:id', updateDocumentTypeById);
-router.delete('/:id', deleteDocumentTypeById);
+router.post('/documentType', createDocumentType);
+router.get('/documentType', getDocuments);
+
 
 module.exports = router;
