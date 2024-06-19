@@ -1,45 +1,45 @@
-const Defuncion = require('../models/death-model'); // Ajusta la ruta según tu estructura de proyecto
+const Death = require('../models/death-model'); // Ajusta la ruta según tu estructura de proyecto
 
 module.exports = {
   // Obtener todas las defunciones
-  getAllDefunciones: async (req, res) => {
+  getAllDeaths: async (req, res) => {
     try {
-      const defunciones = await Defuncion.find();
-      res.json(defunciones);
+      const deaths = await Death.find();
+      res.json(deaths);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
   },
 
   // Crear una nueva defunción
-  createDefuncion: async (req, res) => {
+  createDeath: async (req, res) => {
     try {
-      const nuevaDefuncion = new Defuncion(req.body);
-      const defuncionGuardada = await nuevaDefuncion.save();
-      res.status(201).json(defuncionGuardada);
+      const newDeaths = new Death(req.body);
+      const saveDeaths = await newDeaths.save();
+      res.status(201).json(saveDeaths);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
   },
 
   // Actualizar una defunción por ID
-  updateDefuncion: async (req, res) => {
+  updateDeath: async (req, res) => {
     try {
-      const defuncionActualizada = await Defuncion.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      if (!defuncionActualizada) {
+      const updateDeaths = await Death.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      if (!updateDeaths) {
         return res.status(404).json({ message: 'Defunción no encontrada' });
       }
-      res.json(defuncionActualizada);
+      res.json(updateDeaths);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
   },
 
   // Eliminar una defunción por ID
-  deleteDefuncion: async (req, res) => {
+  deleteDeath: async (req, res) => {
     try {
-      const defuncionEliminada = await Defuncion.findByIdAndDelete(req.params.id);
-      if (!defuncionEliminada) {
+      const deleteDeaths = await Death.findByIdAndDelete(req.params.id);
+      if (!deleteDeaths) {
         return res.status(404).json({ message: 'Defunción no encontrada' });
       }
       res.json({ message: 'Defunción eliminada correctamente' });

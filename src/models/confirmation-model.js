@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
-const Partida = require('./departure-model');
-const Persona = require('./user-model');  // Importar el modelo de Persona
+const Departure = require('./departure-model');
+const Person = require('./user-model');  // Importar el modelo de Persona
 
-const confirmacionSchema =Partida.discriminator('Confirmacion', new mongoose.Schema({
-  confirmado: {
+const confirmationSchema =Departure.discriminator('Confirmation', new mongoose.Schema({
+  confirmed: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Persona',
+    ref: 'Person',
     required: true
 }, 
   
-  padrino1: {
+      godfather1: {
         type: String,
         required: true
       },
-      padrino2: {
+      godfather2: {
         type: String,
         required: false  // Opcional, no es necesario colocar "required: false" ya que es por defecto
       },
-      padrino3: {
+      godfather3: {
         type: String,
         required: false  // Opcional
       },
@@ -25,4 +25,4 @@ const confirmacionSchema =Partida.discriminator('Confirmacion', new mongoose.Sch
 }));
 
 
-module.exports = confirmacionSchema;
+module.exports = confirmationSchema;

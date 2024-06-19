@@ -1,46 +1,46 @@
 const mongoose = require('mongoose');
-const Partida = require('./departure-model');
+const departure = require('./departure-model');
 
-const matrimonioSchema = new mongoose.Schema({
-  esposo: {
+const marriageSchema = new mongoose.Schema({
+  husband: {
     type: String,
     required: true
   },
-  esposa: {
+  wife: {
     type: String,
     required: true
   },
-  padreEsposo:{
+  father_husband:{
     type: String,
     required: false
   },
-  madreEsposo:{
+  mother_husband:{
     type: String,
     required: false
     },
-    padreEsposa:{
+  father_wife:{
         type: String,
         required: false
       },
-      madreEsposa:{
+  mother_wife:{
         type: String,
         required: false
         },
-  padrino1: {
+  godfather1: {
     type: String,
     required: true
   },
-  padrino2: {
+  godfather2: {
     type: String,
     required: true  
   },
-  Testigo: {
+  witness: {
     type: String,
     required: true  
   },
   // Otros campos específicos de Matrimonio
 });
 
-const Matrimonio = Partida.discriminator('Matrimonio', matrimonioSchema);
+const marriage = departure.discriminator('Marriage', marriageSchema);
 
-module.exports = Matrimonio;
+module.exports = marriage;

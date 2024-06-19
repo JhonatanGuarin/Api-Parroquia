@@ -1,21 +1,21 @@
 const mongoose = require('mongoose');
 
 const massRegistrySchema = new mongoose.Schema({
-    id_misa: {
+  id_mass: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Mass',
     required: true,
   },
-  id_usuario: {
+  id_user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  fecha_hora_solicitud: {
+  date_time_request: {
     type: Date,
     required: true,
   },
-  motivo: {
+  reason: {
     type: String,
     required: true,
   }

@@ -1,24 +1,24 @@
 const mongoose = require('mongoose');
-const Partida = require('./departure-model');
+const departure = require('./departure-model');
 
-const defuncionSchema = new mongoose.Schema({
-  nombreDifunto: {
+const deathSchema = new mongoose.Schema({
+  deceased_name: {
     type: String,
     required: true
   },
-  Edad_Al_Fallecer: {
+  age_at_death: {
     type: Number,
     required: true
   },
-  CausaMuerte: {
+  cause_death: {
     type: String,
     required: true
   }, 
-  Padre:{
+  Father:{
     type: String,
     required: false
   }, 
-  Madre: {
+  Mother: {
     type: String,
     required: false
   }
@@ -26,6 +26,6 @@ const defuncionSchema = new mongoose.Schema({
   // Otros campos específicos de Defunción
 });
 
-const Defuncion = Partida.discriminator('Defuncion', defuncionSchema);
+const death = departure.discriminator('Death', deathSchema);
 
-module.exports = Defuncion;
+module.exports = death;

@@ -2,21 +2,21 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = {
-    getAllConfirmaciones,
-    createConfirmacion,
-    updateConfirmacion,
-    deleteConfirmacionById
+    getAllConfirmations,
+    createConfirmation,
+    updateConfirmation,
+    deleteConfirmationById
   }=require('../controllers/controll-confirmation');
 
   // Ruta para obtener todas las confirmaciones
-router.get('/', getAllConfirmaciones);
+router.get('/', getAllConfirmations);
 
 // Ruta para crear una nueva confirmación
-router.post('/', createConfirmacion);
+router.post('/', createConfirmation);
 
 // Ruta para actualizar una confirmación por ID
-router.put('/:id', updateConfirmacion);
+router.put('/:id', updateConfirmation);
 
-router.delete('/:id', deleteConfirmacionById);
+router.delete('/:id', deleteConfirmationById);
 
 module.exports = router;

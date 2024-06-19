@@ -1,46 +1,46 @@
-const Matrimonio = require('../models/marriage-model'); // Asegúrate de que la ruta sea correcta
+const Marriage = require('../models/marriage-model'); // Asegúrate de que la ruta sea correcta
 
 module.exports = {
 
 // Obtener todos los registros de matrimonio
-getAllMatrimonios : async (req, res) => {
+getAllMarriages : async (req, res) => {
   try {
-    const matrimonios = await Matrimonio.find();
-    res.json(matrimonios);
+    const marriages = await Marriage.find();
+    res.json(marriages);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 },
 
 // Crear un nuevo registro de matrimonio
-createMatrimonio : async (req, res) => {
+createMarriage : async (req, res) => {
   try {
-    const nuevoMatrimonio = new Matrimonio(req.body);
-    const matrimonioGuardado = await nuevoMatrimonio.save();
-    res.status(201).json(matrimonioGuardado);
+    const newMarriage = new Marriage(req.body);
+    const saveMarriage = await newMarriage.save();
+    res.status(201).json(saveMarriage);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 },
 
 // Actualizar un registro de matrimonio por ID
-updateMatrimonio : async (req, res) => {
+updateMarriage : async (req, res) => {
   try {
-    const matrimonio = await Matrimonio.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!matrimonio) {
+    const marriage = await Marriage.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!marriage) {
       return res.status(404).json({ message: 'Matrimonio no encontrado' });
     }
-    res.json(matrimonio);
+    res.json(marriage);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 },
 
 // Eliminar un registro de matrimonio por ID
-deleteMatrimonio : async (req, res) => {
+deleteMarriage : async (req, res) => {
   try {
-    const matrimonioEliminado = await Matrimonio.findByIdAndDelete(req.params.id);
-    if (!matrimonioEliminado) {
+    const deleteMarriage = await Marriage.findByIdAndDelete(req.params.id);
+    if (!deleteMarriage) {
       return res.status(404).json({ message: 'Matrimonio no encontrado' });
     }
     res.json({ message: 'Matrimonio eliminado correctamente' });

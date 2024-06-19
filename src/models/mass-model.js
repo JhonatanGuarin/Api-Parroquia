@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const massSchema = new mongoose.Schema({
   
-  nombre_sacerdote: {
+  name_Priest: {
     type: String,
     required: true,
   },
-  fecha_Misa: {
+  date_Mass: {
     type: Date,
     required: true,
   }

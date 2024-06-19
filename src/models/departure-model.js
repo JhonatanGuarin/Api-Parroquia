@@ -1,26 +1,26 @@
 const mongoose = require('mongoose');
 
-const partidaSchema = new mongoose.Schema({
-  número_partida: {
+const departureSchema = new mongoose.Schema({
+  num_departure: {
     type: Number,
     required: true
   },
-  sacerdote: {
+  priest: {
     type: String,
     required: true
   },
-  fecha_expedición: {
+  expedition_date: {
     type: Date,
     required: true
   },
-  tipo: {
+  type: {
     type: String,
     required: true,
-    default: 'Partida'
+    default: 'Departure'
   }, 
   
 });
 
-const Partida = mongoose.model('Partida', partidaSchema);
+const departure = mongoose.model('Departure', departureSchema);
 
-module.exports = Partida;
+module.exports = departure;

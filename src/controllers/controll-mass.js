@@ -7,12 +7,12 @@ module.exports = {
 createMass : async (req, res) => {
 try {
   // Extraer los datos del cuerpo de la solicitud, excluyendo id_misa
-  const { nombre_sacerdote, fecha_Misa } = req.body;
+  const { name_Priest, date_Mass } = req.body;
 
   // Crear una nueva instancia de Mass
   const newMass = new Mass({
-    nombre_sacerdote,
-    fecha_Misa
+    name_Priest,
+    date_Mass
   });
 
   // Guardar la nueva instancia en la base de datos

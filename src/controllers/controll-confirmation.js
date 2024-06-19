@@ -1,45 +1,45 @@
-const Confirmacion = require('../models/confirmation-model');
+const Confirmation = require('../models/confirmation-model');
 
 
 module.exports = {
 // Obtener todas las confirmaciones
-getAllConfirmaciones: async (req, res) => {
+getAllConfirmations: async (req, res) => {
   try {
-    const confirmaciones = await Confirmacion.find();
-    res.json(confirmaciones);
+    const confirmations = await Confirmation.find();
+    res.json(confirmations);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 },
 
 // Crear una nueva confirmación
-createConfirmacion : async (req, res) => {
-  const confirmacion = new Confirmacion(req.body);
+createConfirmation : async (req, res) => {
+  const confirmation = new Confirmation(req.body);
   try {
-    const nuevaConfirmacion = await confirmacion.save();
-    res.status(201).json(nuevaConfirmacion);
+    const newConfirmation = await confirmation.save();
+    res.status(201).json(newConfirmation);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 },
 
 // Actualizar una confirmación por ID
-updateConfirmacion : async (req, res) => {
+updateConfirmation : async (req, res) => {
   const id = req.params.id;
   try {
-    const confirmacionActualizada = await Confirmacion.findByIdAndUpdate(id, req.body, { new: true });
-    if (!confirmacionActualizada) {
+    const updateConfirmation = await Confirmation.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updateConfirmation) {
       return res.status(404).json({ message: 'Confirmación no encontrada' });
     }
-    res.json(confirmacionActualizada);
+    res.json(updateConfirmation);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 }, 
-deleteConfirmacionById : async (req, res) => {
+deleteConfirmationById : async (req, res) => {
     try {
-      const ConfirmacionEliminado = await Confirmacion.findByIdAndDelete(req.params.id);
-      if (!ConfirmacionEliminado) {
+      const deleteConfirmation = await Confirmation.findByIdAndDelete(req.params.id);
+      if (!deleteConfirmation) {
         return res.status(404).json({ message: 'Confirmación no encontrado para eliminar' });
       }
       res.json({ message: 'Confirmación eliminado correctamente' });

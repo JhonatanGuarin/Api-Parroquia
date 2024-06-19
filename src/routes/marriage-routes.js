@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getAllMatrimonios,
-  createMatrimonio,
-  updateMatrimonio,
-  deleteMatrimonio
+  getAllMarriages,
+  createMarriage,
+  updateMarriage,
+  deleteMarriage
 } = require('../controllers/controll-marriage');
 
 // Ruta para obtener todos los registros de matrimonio
-router.get('/', getAllMatrimonios);
+router.get('/', getAllMarriages);
 
 // Ruta para crear un nuevo registro de matrimonio
-router.post('/', createMatrimonio);
+router.post('/', createMarriage);
 
 // Ruta para actualizar un registro de matrimonio por ID
-router.put('/:id', updateMatrimonio);
+router.put('/:id', updateMarriage);
 
 // Ruta para eliminar un registro de matrimonio por ID
-router.delete('/:id', deleteMatrimonio);
+router.delete('/:id', deleteMarriage);
 
 module.exports = router;

@@ -15,10 +15,10 @@ getAllMassRegistries : async (req, res) => {
 // Crear un nuevo registro de misa
 createMassRegistry : async (req, res) => {
   const massRegistry = new MassRegistry({
-    id_misa: req.body.id_misa,
-    id_usuario: req.body.id_usuario,
-    fecha_hora_solicitud: req.body.fecha_hora_solicitud,
-    motivo: req.body.motivo
+    id_mass: req.body.id_mass,
+    id_user: req.body.id_user,
+    date_time_request: req.body.date_time_request,
+    reason: req.body.reason
   });
 
   try {
