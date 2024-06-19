@@ -1,4 +1,4 @@
-const Confirmacion = require('../models/confirmacion-model');
+const Confirmacion = require('../models/confirmation-model');
 
 
 module.exports = {

@@ -6,7 +6,7 @@ module.exports = {
     createConfirmacion,
     updateConfirmacion,
     deleteConfirmacionById
-  }=require('../controllers/controll-confirmacion');
+  }=require('../controllers/controll-confirmation');
 
   // Ruta para obtener todas las confirmaciones
 router.get('/', getAllConfirmaciones);

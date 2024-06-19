@@ -3,7 +3,7 @@ const router = express.Router();
 const {
     getAllPartidas,
     getPartidasByType
-  }  = require('../controllers/controll-partida');
+  }  = require('../controllers/controll-departure');
 
 
 

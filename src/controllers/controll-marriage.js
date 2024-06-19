@@ -1,4 +1,4 @@
-const Matrimonio = require('../models/Matrimonio-model'); // Asegúrate de que la ruta sea correcta
+const Matrimonio = require('../models/marriage-model'); // Asegúrate de que la ruta sea correcta
 
 module.exports = {
 

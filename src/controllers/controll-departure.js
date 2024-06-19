@@ -1,4 +1,4 @@
-const Partida = require('../models/Partida-model');
+const Partida = require('../models/departure-model');
 
 
 module.exports = {

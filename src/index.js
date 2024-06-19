@@ -2,11 +2,11 @@ const express= require('express');
 const morgan = require('morgan');
 const massRoutes = require('./routes/mass-routes');
 const massRegistryRoutes = require('./routes/massRegistry-routes');
-const bautismoRoutes = require('./routes/bautismo-routes');
-const partidasRoutes = require('./routes/partida-routes');
-const confimacionRoutes = require('./routes/confirmacion-routes');
-const defuncionRoutes = require('./routes/defuncion-routes');
-const matrimonioRoutes = require('./routes/matrimonio-routes');
+const bautismoRoutes = require('./routes/baptism-routes');
+const partidasRoutes = require('./routes/departure-routes');
+const confimacionRoutes = require('./routes/confirmation-routes');
+const defuncionRoutes = require('./routes/death-routes');
+const matrimonioRoutes = require('./routes/marriage-routes');
 
 
 const app = express();

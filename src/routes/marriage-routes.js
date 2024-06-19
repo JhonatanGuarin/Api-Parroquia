@@ -5,7 +5,7 @@ const {
   createMatrimonio,
   updateMatrimonio,
   deleteMatrimonio
-} = require('../controllers/controll-matrimonio');
+} = require('../controllers/controll-marriage');
 
 // Ruta para obtener todos los registros de matrimonio
 router.get('/', getAllMatrimonios);

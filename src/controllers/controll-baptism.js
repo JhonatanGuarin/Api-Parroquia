@@ -1,4 +1,4 @@
-const Bautismo = require('../models/Bautismo-model');
+const Bautismo = require('../models/baptism-model');
 
 
 module.exports = {

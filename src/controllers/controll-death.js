@@ -1,4 +1,4 @@
-const Defuncion = require('../models/Defuncion-model'); // Ajusta la ruta según tu estructura de proyecto
+const Defuncion = require('../models/death-model'); // Ajusta la ruta según tu estructura de proyecto
 
 module.exports = {
   // Obtener todas las defunciones

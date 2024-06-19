@@ -6,7 +6,7 @@ const {
   getBautismoById,
   updateBautismoById,
   deleteBautismoById
-} = require('../controllers/controll-bautismo');
+} = require('../controllers/controll-baptism');
 
 // Ruta para crear un nuevo bautismo
 router.post('/', createBautismo);

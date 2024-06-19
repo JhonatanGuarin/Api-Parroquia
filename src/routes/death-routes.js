@@ -5,7 +5,7 @@ const {
   createDefuncion,
   updateDefuncion,
   deleteDefuncion
-} = require('../controllers/controll-defuncion'); // Ajusta la ruta según tu estructura de proyecto
+} = require('../controllers/controll-death'); // Ajusta la ruta según tu estructura de proyecto
 
 // Ruta para obtener todas las defunciones
 router.get('/', getAllDefunciones);

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Partida = require('./Partida-model');
+const Partida = require('./departure-model');
 
 const matrimonioSchema = new mongoose.Schema({
   esposo: {

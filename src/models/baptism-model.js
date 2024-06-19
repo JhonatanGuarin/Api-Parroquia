@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Partida = require('./Partida-model');  // Importar el modelo de Partida
+const Partida = require('./departure-model');  // Importar el modelo de Partida
 const Persona = require('./user-model');  // Importar el modelo de Persona
 
 const bautismoSchema = Partida.discriminator('Bautismo', new mongoose.Schema({
