@@ -9,7 +9,7 @@ const accountingSchema = new mongoose.Schema({
   type: {
   type: String,
   required: true,
-  default: 'Departure'
+  default: 'Accounting'
 },
 
 });
