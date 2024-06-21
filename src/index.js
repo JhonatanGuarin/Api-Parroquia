@@ -8,6 +8,8 @@ const confirmationRoutes = require('./routes/confirmation-routes');
 const deathRoutes = require('./routes/death-routes');
 const marriageRoutes = require('./routes/marriage-routes');
 const accountingRoutes = require('./routes/accounting-routes');
+const tithesRoutes = require('./routes/tithes-routes');
+const donationsRoutes = require('./routes/donation-routes');
 
 
 const app = express();
@@ -34,6 +36,8 @@ app.use('/defuncion',deathRoutes);
 app.use('/matrimonio',marriageRoutes);
 
 app.use('/contabilidad',accountingRoutes);
+app.use('/diezmos', tithesRoutes);
+app.use('/donaciones', donationsRoutes);
 
 
 app.use(require('./routes/user-routes'))
