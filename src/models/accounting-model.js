@@ -4,9 +4,14 @@ const accountingSchema = new mongoose.Schema({
   date_time: {
     type: Date,
     required: true
-  }
-},{
-  discriminatorKey: 'Kind', collection:'accountings'
+  },
+
+  type: {
+  type: String,
+  required: true,
+  default: 'Departure'
+},
+
 });
 
 const accounting = mongoose.model('Accounting', accountingSchema);
