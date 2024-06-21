@@ -7,6 +7,7 @@ const departureRoutes = require('./routes/departure-routes');
 const confirmationRoutes = require('./routes/confirmation-routes');
 const deathRoutes = require('./routes/death-routes');
 const marriageRoutes = require('./routes/marriage-routes');
+const accountingRoutes = require('./routes/accounting-routes');
 
 
 const app = express();
@@ -31,6 +32,9 @@ app.use('/partida',departureRoutes);
 app.use('/confirmacion',confirmationRoutes);
 app.use('/defuncion',deathRoutes);
 app.use('/matrimonio',marriageRoutes);
+
+app.use('/contabilidad',accountingRoutes);
+
 
 app.use(require('./routes/user-routes'))
 app.use(require('./routes/documentType-routes'))
