@@ -1,10 +1,11 @@
 const User = require('../models/user-model');
+const bcrypt = require('bcrypt');
 
 
 module.exports = {
 
   // Controlador para crear un nuevo usuario
-  createUser : async (req, res) => {
+  createUser: async (req, res) => {
     try {
       const { name, lastName, birthdate, documentNumber, typeDocument, mail, password, role } = req.body;
   
@@ -16,13 +17,17 @@ module.exports = {
   
       // Verificar si la fecha de nacimiento es mayor a la fecha actual
       const currentDate = new Date();
-      if (birthdate > currentDate) {
+      if (new Date(birthdate) > currentDate) {
         return res.status(400).json({ error: 'La fecha de nacimiento no puede ser mayor a la fecha actual' });
       }
   
       // Establecer el valor predeterminado del rol si no se proporciona
       const defaultRole = 'Usuario';
       const userRole = role || defaultRole;
+  
+      // Hashear la contraseña
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
   
       const user = new User({
         name,
@@ -31,7 +36,7 @@ module.exports = {
         documentNumber,
         typeDocument,
         mail,
-        password,
+        password: hashedPassword,  // Guardamos la contraseña hasheada
         role: userRole
       });
   
@@ -39,7 +44,7 @@ module.exports = {
   
       return res.status(201).json({ data: result });
     } catch (err) {
-      return res.status(500).json({ err: err });
+      return res.status(500).json({ error: err.message });
     }
   },
 
