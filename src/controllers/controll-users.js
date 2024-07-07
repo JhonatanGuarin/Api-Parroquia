@@ -1,5 +1,8 @@
+const mongoose = require('mongoose');
 const User = require('../models/user-model');
 const bcrypt = require('bcryptjs');
+const DocumentType = require('../models/DocumentType-model');
+const Role = require('../models/Roles-model');
 
 
 module.exports = {
@@ -8,40 +11,54 @@ module.exports = {
   createUser: async (req, res) => {
     try {
       const { name, lastName, birthdate, documentNumber, typeDocument, mail, password, role } = req.body;
-  
+
       // Verificar si el correo electrónico ya está registrado
       const existingUser = await User.findOne({ mail });
       if (existingUser) {
         return res.status(400).json({ error: 'El correo electrónico ya está registrado' });
       }
-  
+
       // Verificar si la fecha de nacimiento es mayor a la fecha actual
       const currentDate = new Date();
       if (new Date(birthdate) > currentDate) {
         return res.status(400).json({ error: 'La fecha de nacimiento no puede ser mayor a la fecha actual' });
       }
-  
-      // Establecer el valor predeterminado del rol si no se proporciona
-      const defaultRole = 'Usuario';
-      const userRole = role || defaultRole;
-  
+
+
+      // Verificar que typeDocument y role son IDs válidos de MongoDB
+      if (!mongoose.Types.ObjectId.isValid(typeDocument) || !mongoose.Types.ObjectId.isValid(role)) {
+        return res.status(400).json({ error: 'Tipo de documento o rol no válido' });
+      }
+
+      // Obtener el _id de typeDocument y role desde DocumentType y Role
+      const typeDocumentObj = await DocumentType.findById(typeDocument);
+      const roleObj = await Role.findById(role);
+
+      console.log(`typeDocument: ${typeDocument}, role: ${role}`);
+      console.log(`typeDocumentObj: ${typeDocumentObj}, roleObj: ${roleObj}`);
+
+
+      if (!typeDocumentObj || !roleObj) {
+        return res.status(400).json({ error: 'Tipo de documento o rol no válido' });
+      }
+
       // Hashear la contraseña
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-  
+
       const user = new User({
         name,
         lastName,
         birthdate,
         documentNumber,
-        typeDocument,
+        typeDocument: typeDocumentObj,
         mail,
         password: hashedPassword,  // Guardamos la contraseña hasheada
-        role: userRole
+        role: roleObj
       });
-  
+
       const result = await user.save();
-  
+
       return res.status(201).json({ data: result });
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -49,19 +66,19 @@ module.exports = {
   },
 
   // Controlador para obtener todos los usuarios
-  getAllUsers : async (req, res) => {
+  getAllUsers: async (req, res) => {
     try {
-      const users = await User.find().populate('typeDocument');
+      const users = await User.find().populate('typeDocument').populate('role');
       console.log('Usuarios obtenidos:', users); // Log para depuración
       res.status(200).send(users);
     } catch (err) {
-        console.error('Error al obtener usuarios:', err); // Log para depuración
-        res.status(500).send({ error: 'Error al obtener usuarios', details: err.message });
+      console.error('Error al obtener usuarios:', err); // Log para depuración
+      res.status(500).send({ error: 'Error al obtener usuarios', details: err.message });
     }
   },
 
   // Controlador para actualizar un usuario por ID
-  updateUserById : async (req, res) => {
+  updateUserById: async (req, res) => {
     try {
       const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
       if (!user) {
@@ -74,7 +91,7 @@ module.exports = {
   },
 
   // Controlador para eliminar un usuario por ID
-  deleteUserById : async (req, res) => {
+  deleteUserById: async (req, res) => {
     try {
       const user = await User.findByIdAndDelete(req.params.id);
       if (!user) {
