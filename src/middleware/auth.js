@@ -1,23 +1,24 @@
-const { verifyToken } = require('../helpers/generateToken')
+const { verifyToken } = require('../helpers/generateToken');
 
-const checkAuth = async (req, res, next) => {
+const checkAuth = (req, res, next) => {
     try {
-        //TODO: authorization: Bearer 1010101010101001010100 
-        const token = req.headers.authorization.split(' ').pop() //TODO:123123213
-        const tokenData = await verifyToken(token)
-        if (tokenData._id) {
-            next()
-        } else {
-            res.status(409)
-            res.send({ error: 'Tu por aqui no pasas!' })
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ error: 'No token provided' });
         }
 
-    } catch (e) {
-        console.log(e)
-        res.status(409)
-        res.send({ error: 'Tu por aqui no pasas!' })
+        const token = authHeader.split(' ').pop();
+        const tokenData = verifyToken(token);
+
+        if (tokenData._id) {
+            next();
+        } else {
+            return res.status(401).json({ error: 'Invalid or expired token' });
+        }
+    } catch (err) {
+        console.error('Authentication error:', err);
+        return res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-}
-
-module.exports = checkAuth
+module.exports = checkAuth;

@@ -5,7 +5,6 @@ const { tokenSign } = require('../helpers/gerate-token')
 
 module.exports = {
 
-    // Controlador para crear un nuevo usuario
     registerUser: async (req, res) => {
         try {
         const { name, lastName, birthdate, documentNumber, typeDocument, mail, password, role } = req.body;

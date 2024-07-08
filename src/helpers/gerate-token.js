@@ -1,31 +1,39 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-const tokenSign = async (user) => { //TODO: Genera Token
-    return jwt.sign(
-        {
-            _id: user._id, //TODO: <---
-            role: user.role
-        }, //TODO: Payload ! Carga útil
-        process.env.JWT_SECRET, //TODO ENV 
-        {
-            expiresIn: "2h", //TODO tiempo de vida
-        }
-    );
-}
-
-const verifyToken = async (token) => {
+const tokenSign = (user) => {
     try {
-        return jwt.verify(token, process.env.JWT_SECRET)
-    } catch (e) {
-        return null
+        return jwt.sign(
+            {
+                _id: user._id,
+                role: user.role
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "2h",
+            }
+        );
+    } catch (error) {
+        console.error('Error signing token:', error);
+        throw new Error('Failed to generate token');
     }
-}
+};
 
-//Verificar que el token sea valido y correcto
-const decodeSign = (token) => { 
-    return jwt.decode(token, null)
-}
+const verifyToken = (token) => {
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+        console.error('Error verifying token:', error);
+        return null;
+    }
+};
 
+const decodeSign = (token) => {
+    try {
+        return jwt.decode(token, null);
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
+};
 
-
-module.exports = { tokenSign, decodeSign, verifyToken }
+module.exports = { tokenSign, decodeSign, verifyToken };
