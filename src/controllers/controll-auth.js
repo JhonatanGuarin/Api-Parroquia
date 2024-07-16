@@ -30,7 +30,7 @@ module.exports = {
         );
 
         // Enviar código por correo
-        await emailService.sendResetCode(mail, verificationCode);
+        await emailService.sendVerifyCode(mail, verificationCode);
 
         res.status(200).json({ message: 'Código de verificación enviado' });
     } catch (error) {
