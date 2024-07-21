@@ -72,10 +72,18 @@ module.exports = {
             return res.status(400).json({ error: 'El correo electrónico no ha sido verificado' });
         }
 
-        // Verificar si la fecha de nacimiento es mayor a la fecha actual
+        // Validar la fecha de nacimiento
+        const birthDate = new Date(birthdate);
         const currentDate = new Date();
-        if (new Date(birthdate) > currentDate) {
-            return res.status(400).json({ error: 'La fecha de nacimiento no puede ser mayor a la fecha actual' });
+        const minBirthDate = new Date('1930-01-01');
+
+        if (birthDate > currentDate || birthDate < minBirthDate) {
+            return res.status(400).json({ error: 'La fecha de nacimiento debe estar entre 1930 y la fecha actual' });
+        }
+
+        // Verificar que la contraseña tenga al menos 8 caracteres
+        if (password.length < 8) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
         }
 
         // Establecer el valor predeterminado del rol si no se proporciona
@@ -105,7 +113,7 @@ module.exports = {
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
-  },
+},
 
   loginUser: async (req, res) => {
         try {
