@@ -1,4 +1,4 @@
-const { verifyToken } = require('../helpers/generateToken');
+const { verifyToken } = require('../helpers/gerate-token');
 
 const checkAuth = (req, res, next) => {
     try {
