@@ -15,8 +15,7 @@ const userSchema = new mongoose.Schema({
   },
   documentNumber: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   typeDocument: {
     type: mongoose.Schema.Types.ObjectId,
