@@ -15,7 +15,7 @@ const {
 router.post('/', createUser);
 
 // Ruta para obtener todos los usuarios
-router.get('/', checkAuth, checkRoleAuth(["Usuario", "Admin"]), getAllUsers);
+router.get('/', checkAuth, checkRoleAuth(["SuperAdmin", "Admin"]), getAllUsers);
 
 // Ruta para actualizar un usuario por ID
 router.put('/:id', updateUserById);
