@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const departure = require('./departure');
 
 const deathSchema = new mongoose.Schema({
   deceased_name: {
@@ -26,6 +25,6 @@ const deathSchema = new mongoose.Schema({
   // Otros campos específicos de Defunción
 });
 
-const death = departure.discriminator('Death', deathSchema);
+const death = mongoose.model('Death', deathSchema);
 
 module.exports = death;

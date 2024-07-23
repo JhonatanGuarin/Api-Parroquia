@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const departure = require('./departure');  // Importar el modelo de Partida
 const Person = require('./user');  // Importar el modelo de Persona
 
-const baptismSchema = departure.discriminator('Baptism', new mongoose.Schema({
+const baptismSchema = mongoose.model('Baptism', new mongoose.Schema({
  
   baptized: {
         type: mongoose.Schema.Types.ObjectId,

@@ -1,28 +1,31 @@
 const mongoose = require('mongoose');
-const Departure = require('./departure');
-const Person = require('./user');  // Importar el modelo de Persona
 
-const confirmationSchema =Departure.discriminator('Confirmation', new mongoose.Schema({
+const confirmationSchema = new mongoose.Schema({
   confirmed: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Person',
+    type: mongoose.Schema.Types.ObjectId, // Tipo ObjectId para referencia
+    ref: 'User', // Referencia al modelo User
+    required: true // El campo es obligatorio
+  },
+  godfather1: {
+    type: String,
+    required: true // El primer padrino es obligatorio
+  },
+  godfather2: {
+    type: String,
+    required: false // El segundo padrino es opcional
+  },
+  godfather3: {
+    type: String,
+    required: false // El tercer padrino es opcional
+  },
+  baptismPlace: {
+    type: String,
     required: true
-}, 
-  
-      godfather1: {
-        type: String,
-        required: true
-      },
-      godfather2: {
-        type: String,
-        required: false  // Opcional, no es necesario colocar "required: false" ya que es por defecto
-      },
-      godfather3: {
-        type: String,
-        required: false  // Opcional
-      },
-      // Otros campos específicos para bautismo
-}));
+  },
+
+});
 
 
-module.exports = confirmationSchema;
+const confirmation = mongoose.model('Confirmation', confirmationSchema);
+
+module.exports = confirmation;
