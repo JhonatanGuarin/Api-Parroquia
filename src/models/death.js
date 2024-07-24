@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const deathSchema = new mongoose.Schema({
   deceased_name: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Users',
     required: true
   },
   age_at_death: {
@@ -21,8 +22,6 @@ const deathSchema = new mongoose.Schema({
     type: String,
     required: false
   }
-
-  // Otros campos específicos de Defunción
 });
 
 const death = mongoose.model('Death', deathSchema);

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const confirmationSchema = new mongoose.Schema({
   confirmed: {
     type: mongoose.Schema.Types.ObjectId, // Tipo ObjectId para referencia
-    ref: 'User', // Referencia al modelo User
+    ref: 'Users', // Referencia al modelo User
     required: true // El campo es obligatorio
   },
   godfather1: {
