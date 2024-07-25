@@ -1,5 +1,5 @@
 const Confirmation = require('../models/confirmation');
-
+const User = require('../models/user')
 
 module.exports = {
 // Obtener todas las confirmaciones
@@ -13,13 +13,27 @@ getAllConfirmations: async (req, res) => {
 },
 
 // Crear una nueva confirmación
-createConfirmation : async (req, res) => {
-  const confirmation = new Confirmation(req.body);
+createConfirmation: async (req, res) => {
   try {
+    // Buscar el usuario por su número de documento
+    const user = await User.findOne({ documentNumber: req.body.documentNumber });
+    
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    // Crear un nuevo objeto de confirmación, reemplazando documentNumber con el ObjectId del usuario
+    const confirmationData = {
+      ...req.body,
+      confirmed: user._id  // Asumiendo que el campo se llama 'confirmed' en el esquema de Confirmation
+    };
+    delete confirmationData.documentNumber;  // Eliminar documentNumber de los datos
+
+    const confirmation = new Confirmation(confirmationData);
     const newConfirmation = await confirmation.save();
     res.status(201).json(newConfirmation);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 },
 

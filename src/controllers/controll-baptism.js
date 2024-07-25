@@ -1,13 +1,28 @@
 const Baptism = require('../models/baptism');
+const User = require('../models/user')
 
 
 module.exports = {
 // Controlador para crear un nuevo bautismo
-createBaptism : async (req, res) => {
+createBaptism: async (req, res) => {
   try {
-    const newbaptism = new Baptism(req.body);
-    const savebaptism = await newbaptism.save();
-    res.status(201).json(savebaptism);
+    // Primero, buscar el usuario por su número de documento
+    const user = await User.findOne({ documentNumber: req.body.documentNumber });
+    
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    // Crear un nuevo objeto de bautismo, reemplazando documentNumber con el ObjectId del usuario
+    const baptismData = {
+      ...req.body,
+      baptized: user._id  // Asignar el ObjectId del usuario
+    };
+    delete baptismData.documentNumber;  // Eliminar documentNumber de los datos
+
+    const newBaptism = new Baptism(baptismData);
+    const saveBaptism = await newBaptism.save();
+    res.status(201).json(saveBaptism);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

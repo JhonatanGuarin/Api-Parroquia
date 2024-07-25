@@ -1,27 +1,43 @@
 const mongoose = require('mongoose');
 
 const deathSchema = new mongoose.Schema({
-  deceased_name: {
+
+  deathDate: {
+    type: Date,
+    required: true
+  },
+
+  dead: {
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Users',
+    ref: 'Users', 
+    required: true 
+  },
+
+  fatherName: {
+    type: String,
     required: true
   },
-  age_at_death: {
-    type: Number,
+
+  motherName: {
+    type: String,
     required: true
   },
-  cause_death: {
+
+  civilStatus: {
     type: String,
     required: true
-  }, 
-  Father:{
+  },
+
+  cemeteryName: {
     type: String,
-    required: false
-  }, 
-  Mother: {
-    type: String,
-    required: false
+    required: true
+  },
+
+  funeralDate: {
+    type: Date,
+    required: true
   }
+
 });
 
 const death = mongoose.model('Death', deathSchema);
