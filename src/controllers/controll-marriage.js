@@ -1,4 +1,5 @@
 const Marriage = require('../models/marriage'); // Asegúrate de que la ruta sea correcta
+const User = require('../models/user')
 
 module.exports = {
 
@@ -13,13 +14,36 @@ getAllMarriages : async (req, res) => {
 },
 
 // Crear un nuevo registro de matrimonio
-createMarriage : async (req, res) => {
+createMarriage: async (req, res) => {
   try {
-    const newMarriage = new Marriage(req.body);
+    // Buscar al esposo por su número de documento
+    const husband = await User.findOne({ documentNumber: req.body.husbandDocumentNumber });
+    if (!husband) {
+      return res.status(404).json({ message: "Esposo no encontrado" });
+    }
+
+    // Buscar a la esposa por su número de documento
+    const wife = await User.findOne({ documentNumber: req.body.wifeDocumentNumber });
+    if (!wife) {
+      return res.status(404).json({ message: "Esposa no encontrada" });
+    }
+
+    // Crear un nuevo objeto de matrimonio, reemplazando los números de documento con los ObjectId de los usuarios
+    const marriageData = {
+      ...req.body,
+      husband: husband._id,
+      wife: wife._id
+    };
+    
+    // Eliminar los números de documento del objeto de datos
+    delete marriageData.husbandDocumentNumber;
+    delete marriageData.wifeDocumentNumber;
+
+    const newMarriage = new Marriage(marriageData);
     const saveMarriage = await newMarriage.save();
     res.status(201).json(saveMarriage);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 },
 

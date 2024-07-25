@@ -14,14 +14,26 @@ module.exports = {
   // Crear una nueva defunción
   createDeath: async (req, res) => {
     try {
-      const newDeaths = new Death(req.body);
-      const saveDeaths = await newDeaths.save();
-      res.status(201).json(saveDeaths);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+      // Buscar al usuario fallecido por su número de documento
+      const user = await User.findOne({ documentNumber: req.body.documentNumber });
+      if (!user) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+  
+      // Crear un nuevo objeto de defunción, reemplazando el número de documento con el ObjectId del usuario
+      const deathData = {
+        ...req.body,
+        dead: user._id  // Asignar el ObjectId del usuario fallecido
+      };
+      delete deathData.documentNumber;  // Eliminar documentNumber de los datos
+  
+      const newDeath = new Death(deathData);
+      const saveDeath = await newDeath.save();
+      res.status(201).json(saveDeath);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
   },
-
   // Actualizar una defunción por ID
   updateDeath: async (req, res) => {
     try {
