@@ -26,24 +26,37 @@ module.exports = {
             }
     
             let departureModel;
+            let query;
+    
             switch (departureType) {
-                case 'Baptism':
+                case 'Baptisms':
                     departureModel = BaptismModel;
+                    query = { baptized: userData._id };
                     break;
-                case 'Confirmation':
+                case 'Confirmations':
                     departureModel = ConfirmationModel;
+                    query = { confirmed: userData._id };
                     break;
-                case 'Death':
+                case 'Deaths':
                     departureModel = DeathModel;
+                    query = { dead: userData._id };
                     break;
-                case 'Marriage':
+                case 'Marriages':
                     departureModel = MarriageModel;
+                    // Para matrimonios, buscamos en ambos campos `groom` y `bride`
+                    query = {
+                        $or: [
+                            { husband: userData._id },
+                            { wife: userData._id }
+                        ]
+                    };
                     break;
                 default:
                     return res.status(400).json({ error: 'Tipo de partida no válido' });
             }
     
-            const existingDeparture = await departureModel.findOne({ userId: userData._id });
+            // Busca la partida en la base de datos usando la consulta adecuada
+            const existingDeparture = await departureModel.findOne(query);
     
             if (!existingDeparture) {
                 return res.status(404).json({ error: 'No se encontró una partida para este usuario' });
