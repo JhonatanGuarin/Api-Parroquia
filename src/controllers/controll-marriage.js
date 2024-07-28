@@ -1,5 +1,4 @@
-const Marriage = require('../models/marriage'); // Asegúrate de que la ruta sea correcta
-const User = require('../models/user');
+const Marriage = require('../models/marriage'); 
 
 module.exports = {
 

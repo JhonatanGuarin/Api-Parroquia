@@ -21,8 +21,13 @@ const requestDepartureSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         refPath: 'departureType', 
         required: true 
-    }
+    },
 
+    status: {
+        type: String,
+        default: 'Pendiente',  // Valor predeterminado
+        required: true,
+    }
 });
 
 const requestDeparture = mongoose.model('RequestDeparture', requestDepartureSchema);

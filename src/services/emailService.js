@@ -1,4 +1,7 @@
 const SibApiV3Sdk = require('@getbrevo/brevo');
+const fs = require('fs');
+const path = require('path');
+const { generatePDF } = require('../services/pdfGenerator');
 
 let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
@@ -45,8 +48,7 @@ exports.sendResetCode = async (mail, resetCode) => {
     console.error('Error al enviar email:', error);
     throw new Error('Error al enviar el correo de recuperación');
   }
-},
-
+};
 
 exports.sendVerifyCode = async (mail, resetCode) => {
   let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -86,6 +88,55 @@ exports.sendVerifyCode = async (mail, resetCode) => {
     return data;
   } catch (error) {
     console.error('Error al enviar email:', error);
-    throw new Error('Error al enviar el correo de recuperación');
+    throw new Error('Error al enviar el correo de verificación');
+  }
+};
+
+exports.sendDepartureDocument = async (requestData, departureData) => {
+  const pdfPath = path.join(__dirname, 'temp', `${requestData.departureType.toLowerCase()}_${departureData._id}.pdf`);
+  
+  try {
+    // Asegúrate de que la carpeta `temp` exista
+    const tempDir = path.join(__dirname, 'temp');
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir);
+    }
+
+    // Genera el PDF y guarda en la ruta especificada
+    await generatePDF(requestData.departureType, departureData, pdfPath);
+
+    let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+    sendSmtpEmail.subject = `Partida de ${requestData.departureType}`;
+    sendSmtpEmail.htmlContent = `
+      <html>
+        <body>
+          <h1>Partida de ${requestData.departureType}</h1>
+          <p>Estimado/a ${requestData.applicant.name},</p>
+          <p>Adjunto encontrará su Partida de ${requestData.departureType} solicitada.</p>
+          <p>Gracias por utilizar nuestros servicios.</p>
+          <p>Atentamente,<br>Parroquia Santa Maria</p>
+        </body>
+      </html>
+    `;
+    sendSmtpEmail.sender = { name: "Parroquia de Santa Maria", email: process.env.FROM_EMAIL };
+    sendSmtpEmail.to = [{ email: requestData.applicant.mail }];
+
+    // Lee el contenido del archivo PDF y convierte a base64
+    const pdfContent = fs.readFileSync(pdfPath);
+    sendSmtpEmail.attachment = [{
+      content: pdfContent.toString('base64'),
+      name: `partida_${requestData.departureType.toLowerCase()}.pdf`
+    }];
+
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(`Email con partida de ${requestData.departureType} enviado correctamente. ID:`, data.messageId);
+    
+    // Elimina el archivo temporal
+    fs.unlinkSync(pdfPath);
+
+    return data;
+  } catch (error) {
+    console.error(`Error al enviar email con partida de ${requestData.departureType}:`, error);
+    throw new Error(`Error al enviar el correo con la partida de ${requestData.departureType}`);
   }
 };
