@@ -9,7 +9,7 @@ const requestDepartureSchema = new mongoose.Schema({
     },
     departureType: {
         type: String,
-        enum: ['Baptisms', 'Confirmations', 'Deaths', 'Marriages'], 
+        enum: ['Baptism', 'Confirmation', 'Death', 'Marriage'], 
         required: true
     },
     applicant: {

@@ -9,6 +9,15 @@ const MarriageModel = require('../models/marriage');
 
 module.exports = {
     
+    getAllRequests : async (req, res) => {
+        try {
+            const requests = await RequestDeparture.find().populate('applicant').populate('departureId');
+            res.json(requests);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    
     createRequestDeparture : async (req, res) => {
         try {
             const { departureType } = req.body;
@@ -29,19 +38,19 @@ module.exports = {
             let query;
     
             switch (departureType) {
-                case 'Baptisms':
+                case 'Baptism':
                     departureModel = BaptismModel;
                     query = { baptized: userData._id };
                     break;
-                case 'Confirmations':
+                case 'Confirmation':
                     departureModel = ConfirmationModel;
                     query = { confirmed: userData._id };
                     break;
-                case 'Deaths':
+                case 'Death':
                     departureModel = DeathModel;
                     query = { dead: userData._id };
                     break;
-                case 'Marriages':
+                case 'Marriage':
                     departureModel = MarriageModel;
                     // Para matrimonios, buscamos en ambos campos `groom` y `bride`
                     query = {
