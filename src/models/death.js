@@ -10,7 +10,8 @@ const deathSchema = new mongoose.Schema({
   dead: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Users', 
-    required: true 
+    required: true, 
+    unique: true
   },
 
   fatherName: {
