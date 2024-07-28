@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const checkAuth = require('../middleware/auth')
+const checkRoleAuth = require('../middleware/roleAuth')
+
 const {
   createBaptism,
   getAllBaptisms,
@@ -15,7 +18,7 @@ router.post('/', createBaptism);
 router.get('/', getAllBaptisms);
 
 // Ruta para obtener un bautismo por número de documento
-router.get('/:documentNumber', getBaptismByDocumentNumber);
+router.get('/:documentNumber', checkAuth, checkRoleAuth(["SuperAdmin"]), getBaptismByDocumentNumber);
 
 // Ruta para actualizar un bautismo por número de documento
 router.put('/:documentNumber', updateBaptismByDocumentNumber);
