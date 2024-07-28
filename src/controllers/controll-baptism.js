@@ -3,12 +3,25 @@ const User = require('../models/user')
 
 
 module.exports = {
+
 // Controlador para crear un nuevo bautismo
 createBaptism: async (req, res) => {
   try {
-    // Primero, buscar el usuario por su número de documento
+    // Verificar que la fecha de bautismo no sea futura
+    const baptismDate = new Date(req.body.baptismDate);
+    const currentDate = new Date();
+    if (baptismDate > currentDate) {
+      return res.status(400).json({ message: "La fecha de bautismo no puede ser futura" });
+    }
+
+    // Verificar si ya existe un registro de bautismo para este número de documento
+    const existingBaptism = await Baptism.findOne({ "baptized.documentNumber": req.body.documentNumber });
+    if (existingBaptism) {
+      return res.status(400).json({ message: "Ya existe un registro de bautismo para este número de documento" });
+    }
+
+    // Buscar el usuario por número de documento
     const user = await User.findOne({ documentNumber: req.body.documentNumber });
-    
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -29,50 +42,92 @@ createBaptism: async (req, res) => {
 },
 
 // Controlador para obtener todos los bautismos
-getAllBaptisms : async (req, res) => {
+getAllBaptisms: async (req, res) => {
   try {
-    const baptisms = await Baptism.find();
+    const baptisms = await Baptism.find().populate({
+      path: 'baptized',
+      select: 'name lastName documentNumber mail role' // Solo incluimos estos campos
+    });
+
     res.json(baptisms);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 },
 
-// Controlador para obtener un bautismo por ID
-getBaptismById : async (req, res) => {
+// Controlador para obtener un bautismo por número de documento del usuario
+getBaptismByDocumentNumber: async (req, res) => {
   try {
-    const baptism = await Baptism.findById(req.params.id);
-    if (!baptism) {
-      return res.status(404).json({ message: 'Bautismo no encontrado' });
+    // Primero, buscar el usuario por su número de documento
+    const user = await User.findOne({ documentNumber: req.params.documentNumber });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
     }
+
+    // Luego, buscar el bautismo usando el ID del usuario
+    const baptism = await Baptism.findOne({ baptized: user._id }).populate({
+      path: 'baptized',
+      select: 'name lastName documentNumber mail role' // Solo incluimos estos campos
+    });
+    
+    if (!baptism) {
+      return res.status(404).json({ message: 'Bautismo no encontrado para este usuario' });
+    }
+    
     res.json(baptism);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 },
 
-// Controlador para actualizar un bautismo por ID
-updateBaptismById : async (req, res) => {
+// Controlador para actualizar un bautismo por número de documento del usuario
+updateBaptismByDocumentNumber: async (req, res) => {
   try {
-    const updateBaptism = await Baptism.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    // Primero, buscar el usuario por su número de documento
+    const user = await User.findOne({ documentNumber: req.params.documentNumber });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    // Luego, buscar y actualizar el bautismo usando el ID del usuario
+    const updateBaptism = await Baptism.findOneAndUpdate(
+      { baptized: user._id },
+      req.body,
+      { new: true }
+    ).populate('baptized');
+    
     if (!updateBaptism) {
       return res.status(404).json({ message: 'Bautismo no encontrado para actualizar' });
     }
+    
     res.json(updateBaptism);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 },
 
-// Controlador para eliminar un bautismo por ID
-deleteBaptismById : async (req, res) => {
+// Controlador para eliminar un bautismo por número de documento del usuario
+deleteBaptismByDocumentNumber: async (req, res) => {
   try {
-    const deleteBaptism = await Baptism.findByIdAndDelete(req.params.id);
+    // Primero, buscar el usuario por su número de documento
+    const user = await User.findOne({ documentNumber: req.params.documentNumber });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    // Luego, buscar y eliminar el bautismo usando el ID del usuario
+    const deleteBaptism = await Baptism.findOneAndDelete({ baptized: user._id });
+    
     if (!deleteBaptism) {
       return res.status(404).json({ message: 'Bautismo no encontrado para eliminar' });
     }
+    
     res.json({ message: 'Bautismo eliminado correctamente' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}};
+}
+};

@@ -3,9 +3,9 @@ const router = express.Router();
 const {
   createBaptism,
   getAllBaptisms,
-  getBaptismById,
-  updateBaptismById,
-  deleteBaptismById
+  getBaptismByDocumentNumber,
+  updateBaptismByDocumentNumber,
+  deleteBaptismByDocumentNumber
 } = require('../controllers/controll-baptism');
 
 // Ruta para crear un nuevo bautismo
@@ -14,13 +14,13 @@ router.post('/', createBaptism);
 // Ruta para obtener todos los bautismos
 router.get('/', getAllBaptisms);
 
-// Ruta para obtener un bautismo por ID
-router.get('/:id', getBaptismById);
+// Ruta para obtener un bautismo por número de documento
+router.get('/:documentNumber', getBaptismByDocumentNumber);
 
-// Ruta para actualizar un bautismo por ID
-router.put('/:id', updateBaptismById);
+// Ruta para actualizar un bautismo por número de documento
+router.put('/:documentNumber', updateBaptismByDocumentNumber);
 
-// Ruta para eliminar un bautismo por ID
-router.delete('/:id', deleteBaptismById);
+// Ruta para eliminar un bautismo por número de documento
+router.delete('/:documentNumber', deleteBaptismByDocumentNumber);
 
 module.exports = router;
