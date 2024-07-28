@@ -35,7 +35,7 @@ const deathSchema = new mongoose.Schema({
 
   funeralDate: {
     type: Date,
-    required: true
+    required: false
   }
 
 });
