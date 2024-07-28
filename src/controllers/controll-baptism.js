@@ -14,12 +14,6 @@ createBaptism: async (req, res) => {
       return res.status(400).json({ message: "La fecha de bautismo no puede ser futura" });
     }
 
-    // Verificar si ya existe un registro de bautismo para este número de documento
-    const existingBaptism = await Baptism.findOne({ "baptized.documentNumber": req.body.documentNumber });
-    if (existingBaptism) {
-      return res.status(400).json({ message: "Ya existe un registro de bautismo para este número de documento" });
-    }
-
     // Buscar el usuario por número de documento
     const user = await User.findOne({ documentNumber: req.body.documentNumber });
     if (!user) {

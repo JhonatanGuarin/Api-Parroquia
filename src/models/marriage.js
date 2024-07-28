@@ -10,13 +10,15 @@ const marriageSchema = new mongoose.Schema({
   husband: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Users',
-    required: true
+    required: true,
+    unique: true
   },
 
   wife: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Users', 
-    required: true
+    required: true,
+    unique: true
   },
 
   father_husband: {

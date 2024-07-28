@@ -26,12 +26,6 @@ module.exports = {
         return res.status(400).json({ message: "La fecha de confirmación no puede ser futura" });
       }
 
-      // Verificar si ya existe un registro de confirmación para este número de documento
-      const existingConfirmation = await Confirmation.findOne({ "confirmed.documentNumber": req.body.documentNumber });
-      if (existingConfirmation) {
-        return res.status(400).json({ message: "Ya existe un registro de confirmación para este número de documento" });
-      }
-
       // Buscar el usuario por número de documento
       const user = await User.findOne({ documentNumber: req.body.documentNumber });
       if (!user) {

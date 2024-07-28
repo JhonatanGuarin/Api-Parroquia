@@ -10,7 +10,8 @@ const baptismSchema = new mongoose.Schema({
   baptized: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Users', 
-    required: true 
+    required: true,
+    unique: true
   },
 
   placeBirth: {
