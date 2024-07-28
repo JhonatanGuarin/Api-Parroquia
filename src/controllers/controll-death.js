@@ -1,4 +1,4 @@
-const Death = require('../models/death'); // Ajusta la ruta según tu estructura de proyecto
+const Death = require('../models/death'); 
 const User = require('../models/user');
 
 module.exports = {
