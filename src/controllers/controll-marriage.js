@@ -1,4 +1,6 @@
 const Marriage = require('../models/marriage'); 
+const User = require('../models/user')
+
 
 module.exports = {
 
