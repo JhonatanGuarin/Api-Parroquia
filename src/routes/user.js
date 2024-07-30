@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const checkAuth = require('../middleware/auth')
-const checkRoleAuth = require('../middleware/roleAuth')
 
 
 const {
@@ -15,7 +13,7 @@ const {
 router.post('/', createUser);
 
 // Ruta para obtener todos los usuarios
-router.get('/', checkAuth, checkRoleAuth(["SuperAdmin", "Admin"]), getAllUsers);
+router.get('/', getAllUsers);
 
 // Ruta para actualizar un usuario por ID
 router.put('/:id', updateUserById);
