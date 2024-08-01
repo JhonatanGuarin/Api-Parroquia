@@ -22,8 +22,8 @@ module.exports = {
     
                 for (const slot of timeSlots) {
                     if (existingTimes.has(slot.time)) {
-                        
-                        alert(res.status(400).json({ message: `La hora ${slot.time} ya está reservada para esta fecha.` }))
+                        return res.status(400).json({ message: `La hora ${slot.time} ya está reservada para esta fecha.` });
+                    
                     }
                 }
     
