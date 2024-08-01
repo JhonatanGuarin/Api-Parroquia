@@ -3,7 +3,8 @@ const router = express.Router()
 
 const {
     createRequestDeparture,
-    getAllRequests,
+    getAllRequestsSent,
+    getAllRequestsEarring,
     sendDepartureDocument
   } = require('../controllers/controll-requestDeparture');
 
@@ -13,7 +14,9 @@ router.post('/', createRequestDeparture);
 
 router.post('/:requestId', sendDepartureDocument);
 
-router.get('/', getAllRequests);
+router.get('/', getAllRequestsSent);
+
+router.get('/', getAllRequestsEarring);
 
 
 module.exports = router
