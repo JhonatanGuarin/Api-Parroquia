@@ -16,7 +16,7 @@ const massScheduleSchema = new mongoose.Schema({
         type: Boolean,
         default: true
       },
-      estatus: {
+      status: {
         type: String,
         default: "Libre"
       }
