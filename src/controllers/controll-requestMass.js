@@ -1,32 +1,49 @@
 const RequestMass = require('../models/requestMass');
 const MassSchedule = require('../models/massSchedule');
+const { verifyToken } = require('../helpers/gerate-token');
+const userModel = require('../models/user');
 
 module.exports = {
 
-    createRequestMass : async (req, res) => {
+    createRequestMass: async (req, res) => {
         try {
             const { date, time, intention } = req.body;
+            const token = req.headers.authorization?.split(' ').pop();
     
-            // Validar que se reciban los datos necesarios
+            // Validar token
+            if (!token) {
+                return res.status(401).json({ error: 'No se proporcionó token de autorización' });
+            }
+    
+            // Verificar token y obtener datos del usuario
+            const tokenData = await verifyToken(token);
+            const userData = await userModel.findById(tokenData._id);
+    
+            if (!userData) {
+                return res.status(404).json({ error: 'Usuario no encontrado' });
+            }
+    
+            // Validar datos requeridos
             if (!date || !time || !intention) {
                 return res.status(400).json({ message: 'Faltan datos requeridos' });
             }
     
             // Crear una nueva solicitud de misa
             const newRequestMass = new RequestMass({
-                date,  // Usar date como cadena
+                date,
                 time,
                 intention,
+                applicant: userData._id  // Guardar la ID del usuario
             });
     
-            // Buscar el horario en la programación de misas para la fecha especificada
+            // Buscar la programación de misas para la fecha especificada
             const schedule = await MassSchedule.findOne({ date });
     
             if (!schedule) {
                 return res.status(404).json({ message: 'No se encontró una programación de misas para esta fecha' });
             }
     
-            // Encontrar el horario específico y actualizar su estatus
+            // Encontrar el horario específico y actualizar su estado
             const timeSlotIndex = schedule.timeSlots.findIndex(slot => slot.time === time);
             
             if (timeSlotIndex === -1) {
@@ -39,7 +56,7 @@ module.exports = {
                 return res.status(400).json({ message: 'El horario ya está ocupado' });
             }
     
-            // Actualizar el estatus del horario a 'Ocupado'
+            // Actualizar el estado del horario a 'Ocupado'
             schedule.timeSlots[timeSlotIndex].status = 'Ocupado';
             await schedule.save();
     
@@ -51,6 +68,15 @@ module.exports = {
         } catch (error) {
             console.error('Error al crear la solicitud de misa:', error);
             res.status(500).json({ message: 'Error al crear la solicitud de misa', error: error.message });
+        }
+    },
+
+    getAllRequestMasses : async (req, res) => {
+        try {
+            const requestMasses = await RequestMass.find().populate('applicant');
+            res.status(200).json(requestMasses);
+        } catch (error) {
+            res.status(500).json({ message: "Error fetching request masses", error: error.message });
         }
     }
 };
