@@ -3,14 +3,23 @@ const router = express.Router();
 
 
 const {
-    requestMass,
-    getRequestStatus
+  createRequestMass,
+  getRequestMasses,
+  updateRequestStatus,
+  cancelRequestMass,
+  
   } = require('../controllers/controll-requestMass');
 
-// Ruta para solicitar una misa
-router.post('/request-mass', requestMass);
+// Crear una nueva solicitud de misa
+router.post('/', createRequestMass);
 
-// Ruta para obtener el estado de las solicitudes
-router.get('/request-status', getRequestStatus);
+// Obtener todas las solicitudes de misa
+router.get('/', getRequestMasses);
+
+// Actualizar el estado de una solicitud de misa
+router.put('/:id/status', updateRequestStatus);
+
+// Cancelar una solicitud de misa
+router.delete('/:id', cancelRequestMass);
 
 module.exports = router;

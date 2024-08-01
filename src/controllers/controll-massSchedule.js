@@ -1,29 +1,34 @@
 const MassSchedule = require('../models/massSchedule');
 
 module.exports = {
-    createMass: async (req, res) => {
+    createMass : async (req, res) => {
         try {
             const { date, timeSlots } = req.body;
             const selectedDate = new Date(date);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-
+    
             // Validar que la fecha no sea anterior a hoy
             if (selectedDate < today) {
                 return res.status(400).json({ message: 'No se pueden crear misas para fechas pasadas' });
             }
-
+    
             // Buscar si ya existe un registro para esta fecha
             let schedule = await MassSchedule.findOne({ date: selectedDate.toISOString().split('T')[0] });
-
+    
             if (schedule) {
-                // Si existe, actualizar los horarios existentes
+                // Si existe, verificar si hay horarios duplicados
                 const existingTimes = new Set(schedule.timeSlots.map(slot => slot.time));
-                timeSlots.forEach(slot => {
-                    if (!existingTimes.has(slot.time)) {
-                        schedule.timeSlots.push(slot);
+    
+                for (const slot of timeSlots) {
+                    if (existingTimes.has(slot.time)) {
+                        
+                        alert(res.status(400).json({ message: `La hora ${slot.time} ya está reservada para esta fecha.` }))
                     }
-                });
+                }
+    
+                // Agregar los nuevos horarios no duplicados
+                schedule.timeSlots.push(...timeSlots);
             } else {
                 // Si no existe, crear un nuevo registro
                 schedule = new MassSchedule({
@@ -31,7 +36,7 @@ module.exports = {
                     timeSlots: timeSlots
                 });
             }
-
+    
             const savedSchedule = await schedule.save();
             console.log('Horario guardado:', savedSchedule);
             res.status(201).json(savedSchedule);

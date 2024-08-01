@@ -9,12 +9,16 @@ const massScheduleSchema = new mongoose.Schema({
   timeSlots: [
     {
       time: {
-        type: String, 
+        type: String,  // Puedes cambiar esto a Date si prefieres almacenar la hora completa
         required: true
       },
       available: {
         type: Boolean,
         default: true
+      },
+      estatus: {
+        type: String,
+        default: "Libre"
       }
     }
   ]
