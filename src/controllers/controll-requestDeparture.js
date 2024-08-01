@@ -18,7 +18,13 @@ module.exports = {
             const requests = await RequestDeparture.find({ status: 'Enviada' })
                 .populate('applicant')
                 .populate('departureId');
-            res.json(requests);
+            
+            const formattedRequests = requests.map(request => ({
+                ...request.toObject(),
+                requestDate: request.requestDate.toISOString().split('T')[0]
+            }));
+            
+            res.json(formattedRequests);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
@@ -29,7 +35,13 @@ module.exports = {
             const requests = await RequestDeparture.find({ status: 'Pendiente' })
                 .populate('applicant')
                 .populate('departureId');
-            res.json(requests);
+            
+            const formattedRequests = requests.map(request => ({
+                ...request.toObject(),
+                requestDate: request.requestDate.toISOString().split('T')[0]
+            }));
+            
+            res.json(formattedRequests);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
