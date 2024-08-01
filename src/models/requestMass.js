@@ -13,12 +13,6 @@ const requestMassSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
-    applicant: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users', 
-        required: true
-    },
     
     status: {
         type: String,

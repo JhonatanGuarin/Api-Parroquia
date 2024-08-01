@@ -48,16 +48,16 @@ module.exports = {
 
     getTimeSlots: async (req, res) => {
         const { date } = req.query;
-
+    
         try {
             const schedule = await MassSchedule.findOne({ date: new Date(date).toISOString().split('T')[0] });
-
+    
             if (!schedule) {
                 return res.status(404).json({ message: 'No se encontraron horarios para esta fecha' });
             }
-
-            // Filtrar solo los horarios disponibles
-            const availableTimeSlots = schedule.timeSlots.filter(slot => slot.available);
+    
+            // Filtrar solo los horarios con estado "Libre"
+            const availableTimeSlots = schedule.timeSlots.filter(slot => slot.status === "Libre");
             res.status(200).json({ timeSlots: availableTimeSlots });
         } catch (error) {
             console.error('Error al obtener los horarios:', error);
