@@ -12,10 +12,23 @@ const fs = require('fs');
 
 
 module.exports = {
-    
-    getAllRequests : async (req, res) => {
+
+    getAllRequestsSent: async (req, res) => {
         try {
-            const requests = await RequestDeparture.find().populate('applicant').populate('departureId');
+            const requests = await RequestDeparture.find({ status: 'Enviada' })
+                .populate('applicant')
+                .populate('departureId');
+            res.json(requests);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    
+    getAllRequestsEarring: async (req, res) => {
+        try {
+            const requests = await RequestDeparture.find({ status: 'Pendiente' })
+                .populate('applicant')
+                .populate('departureId');
             res.json(requests);
         } catch (error) {
             res.status(500).json({ message: error.message });

@@ -1,14 +1,23 @@
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 
+const translations = {
+  Baptism: 'Bautismo',
+  Confirmation: 'Confirmación',
+  Marriage: 'Matrimonio',
+  Death: 'Defunción'
+};
+
 function generatePDF(departureType, departureData, filePath) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument();
     const stream = fs.createWriteStream(filePath);
     doc.pipe(stream);
 
-    doc.fontSize(18).text(`PARROQUIA SANTA MARIA`, { align: 'center' });
-    doc.fontSize(16).text(`PARTIDA DE ${departureType.toUpperCase()}`, { align: 'center' });
+    const departureTypeSpanish = translations[departureType] || departureType;
+
+    doc.fontSize(18).text(`PARROQUIA DE SANTA MARIA BOYACÁ`, { align: 'center' });
+    doc.fontSize(16).text(`PARTIDA DE ${departureTypeSpanish.toUpperCase()}`, { align: 'center' });
     doc.moveDown();
 
     switch (departureType) {
@@ -40,9 +49,10 @@ function generatePDF(departureType, departureData, filePath) {
   });
 }
 
+
 function generateBaptismContent(doc, data) {
-  doc.fontSize(12).text(`En la ciudad de [Ciudad], a los ${data.baptismDate.getDate()} días del mes de ${getMonthName(data.baptismDate.getMonth())} del año ${data.baptismDate.getFullYear()},`);
-  doc.text('yo, el infrascrito [Nombre del Sacerdote], Párroco (o delegado) de esta Parroquia,');
+  doc.fontSize(12).text(`En la municipio de Santa María (Boyacá), a los ${data.baptismDate.getDate()} días del mes de ${getMonthName(data.baptismDate.getMonth())} del año ${data.baptismDate.getFullYear()},`);
+  doc.text('yo, el infrascrito Victor Cardenas, Párroco de esta Parroquia,');
   doc.moveDown();
   doc.text('BAUTICÉ SOLEMNEMENTE A:');
   doc.moveDown();
@@ -55,8 +65,8 @@ function generateBaptismContent(doc, data) {
 }
 
 function generateConfirmationContent(doc, data) {
-  doc.fontSize(12).text(`En la ciudad de [Ciudad], a los ${data.confirmationDate.getDate()} días del mes de ${getMonthName(data.confirmationDate.getMonth())} del año ${data.confirmationDate.getFullYear()},`);
-  doc.text('el Excelentísimo Señor [Nombre del Obispo], Obispo de [Diócesis],');
+  doc.fontSize(12).text(`En la municipio de Santa María (Boyacá), a los ${data.confirmationDate.getDate()} días del mes de ${getMonthName(data.confirmationDate.getMonth())} del año ${data.confirmationDate.getFullYear()},`);
+  doc.text('el Excelentísimo Párroco Victor Cardenas,');
   doc.moveDown();
   doc.text('ADMINISTRÓ EL SACRAMENTO DE LA CONFIRMACIÓN A:');
   doc.moveDown();
@@ -69,8 +79,8 @@ function generateConfirmationContent(doc, data) {
 }
 
 function generateMarriageContent(doc, data) {
-  doc.fontSize(12).text(`En la ciudad de [Ciudad], a los ${data.marriageDate.getDate()} días del mes de ${getMonthName(data.marriageDate.getMonth())} del año ${data.marriageDate.getFullYear()},`);
-  doc.text('ante mí, [Nombre del Sacerdote], Párroco (o delegado) de esta Parroquia,');
+  doc.fontSize(12).text(`En la municipio de Santa María (Boyacá), a los ${data.marriageDate.getDate()} días del mes de ${getMonthName(data.marriageDate.getMonth())} del año ${data.marriageDate.getFullYear()},`);
+  doc.text('ante mí, Victor Cardenas, Párroco de esta Parroquia,');
   doc.moveDown();
   doc.text('CONTRAJERON MATRIMONIO CANÓNICO:');
   doc.moveDown();
@@ -88,8 +98,8 @@ function generateMarriageContent(doc, data) {
 }
 
 function generateDeathContent(doc, data) {
-  doc.fontSize(12).text(`En la ciudad de [Ciudad], a los ${data.deathDate.getDate()} días del mes de ${getMonthName(data.deathDate.getMonth())} del año ${data.deathDate.getFullYear()},`);
-  doc.text('yo, el infrascrito [Nombre del Sacerdote], Párroco (o delegado) de esta Parroquia,');
+  doc.fontSize(12).text(`En la municipio de Santa María (Boyacá), a los ${data.deathDate.getDate()} días del mes de ${getMonthName(data.deathDate.getMonth())} del año ${data.deathDate.getFullYear()},`);
+  doc.text('yo, el infrascrito victor Cardenas, Párroco de esta Parroquia,');
   doc.moveDown();
   doc.text('CERTIFICA QUE:');
   doc.moveDown();
