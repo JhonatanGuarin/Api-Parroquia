@@ -62,6 +62,25 @@ module.exports = {
     }
   },
 
+// Controlador para obtener un usuario por ID
+getUserById: async (req, res) => {
+  try {
+    const userId = req.params.id; // Asumiendo que el ID se pasa como parámetro en la URL
+    const user = await User.findById(userId).populate('typeDocument');
+    
+    if (!user) {
+      return res.status(404).send({ error: 'Usuario no encontrado' });
+    }
+
+    console.log('Usuario encontrado:', user); // Log para depuración
+    res.status(200).send(user);
+  } catch (err) {
+    console.error('Error al obtener usuario por ID:', err); // Log para depuración
+    res.status(500).send({ error: 'Error al obtener usuario', details: err.message });
+  }
+},
+
+
   // Controlador para actualizar un usuario por ID
   updateUserById: async (req, res) => {
     try {

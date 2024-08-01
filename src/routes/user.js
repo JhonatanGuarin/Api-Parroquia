@@ -5,6 +5,7 @@ const router = express.Router();
 const {
   createUser,
   getAllUsers,
+  getUserById,
   updateUserById,
   deleteUserById
 } = require('../controllers/controll-users');
@@ -14,6 +15,9 @@ router.post('/', createUser);
 
 // Ruta para obtener todos los usuarios
 router.get('/', getAllUsers);
+
+// Ruta para obtener usuario por ID
+router.get('/:id', getUserById);
 
 // Ruta para actualizar un usuario por ID
 router.put('/:id', updateUserById);
