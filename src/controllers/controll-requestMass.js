@@ -95,7 +95,7 @@ module.exports = {
 
             const updatedRequest = await RequestMass.findByIdAndUpdate(
                 id,
-                { status: 'Confirmed' },
+                { status: 'Confirmada' },
                 { new: true } // Esto hace que devuelva el documento actualizado
             );
 
