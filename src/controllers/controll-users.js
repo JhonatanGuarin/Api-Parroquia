@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const { verifyToken } = require('../helpers/gerate-token');
+
 
 module.exports = {
 
@@ -62,12 +64,18 @@ module.exports = {
     }
   },
 
-// Controlador para obtener un usuario por ID
-getUserById: async (req, res) => {
+// Controlador para obtener el usuario autenticado
+getUserProfile: async (req, res) => {
   try {
-    const userId = req.params.id; // Asumiendo que el ID se pasa como parámetro en la URL
-    const user = await User.findById(userId).populate('typeDocument');
-    
+    const token = req.headers.authorization?.split(' ').pop();
+
+    if (!token) {
+      return res.status(401).json({ error: 'No se proporcionó token de autorización' });
+    }
+
+    const tokenData = await verifyToken(token);
+    const user = await User.findById(tokenData._id).populate('typeDocument');
+
     if (!user) {
       return res.status(404).send({ error: 'Usuario no encontrado' });
     }
@@ -75,8 +83,8 @@ getUserById: async (req, res) => {
     console.log('Usuario encontrado:', user); // Log para depuración
     res.status(200).send(user);
   } catch (err) {
-    console.error('Error al obtener usuario por ID:', err); // Log para depuración
-    res.status(500).send({ error: 'Error al obtener usuario', details: err.message });
+    console.error('Error al obtener perfil de usuario:', err); // Log para depuración
+    res.status(500).send({ error: 'Error al obtener perfil de usuario', details: err.message });
   }
 },
 

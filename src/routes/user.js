@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   createUser,
   getAllUsers,
-  getUserById,
+  getUserProfile,
   updateUserById,
   deleteUserById
 } = require('../controllers/controll-users');
@@ -17,7 +17,7 @@ router.post('/', createUser);
 router.get('/', getAllUsers);
 
 // Ruta para obtener usuario por ID
-router.get('/:id', getUserById);
+router.get('/data', getUserProfile);
 
 // Ruta para actualizar un usuario por ID
 router.put('/:id', updateUserById);
