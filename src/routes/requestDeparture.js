@@ -15,9 +15,9 @@ router.post('/', createRequestDeparture);
 
 router.post('/:requestId', sendDepartureDocument);
 
-router.get('/', getAllRequestsSent);
+router.get('/Sent', getAllRequestsSent);
 
-router.get('/', getAllRequestsEarring);
+router.get('/earring', getAllRequestsEarring);
 
 router.delete('/:id', deleteRequestById);
 
