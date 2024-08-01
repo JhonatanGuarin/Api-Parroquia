@@ -100,9 +100,9 @@ function generateConfirmationContent(doc, data) {
   doc.text(`En el municipio de Santa María (Boyacá), a los ${data.confirmationDate.getDate()} días del mes de ${getMonthName(data.confirmationDate.getMonth())} del año ${data.confirmationDate.getFullYear()}, el Excelentísimo Párroco Victor Cardenas,`, {
     lineGap: 5
   });
-  doc.moveDown();
+  doc.moveDown(2);
   doc.font('Helvetica-Bold').text('ADMINISTRÓ EL SACRAMENTO DE LA CONFIRMACIÓN A:', { color: '#1c4587' });
-  doc.moveDown();
+  doc.moveDown(2);
   
   doc.font('Helvetica-Bold').text('Nombres y Apellidos: ', { continued: true })
      .font('Helvetica').text(`${data.confirmed.name} ${data.confirmed.lastName}`);
@@ -116,20 +116,17 @@ function generateConfirmationContent(doc, data) {
   doc.font('Helvetica-Bold').text('Bautizado/a en: ', { continued: true })
      .font('Helvetica').text(`${data.buatizedParish || 'N/A'}`);
   
-  doc.moveDown();
-  
   doc.font('Helvetica-Bold').text('Padrino/Madrina: ', { continued: true })
      .font('Helvetica').text(`${data.godfather}`);
 }
 
 function generateMarriageContent(doc, data) {
-  doc.text(`En el municipio de Santa María (Boyacá), a los ${data.marriageDate.getDate()} días del mes de ${getMonthName(data.marriageDate.getMonth())} del año ${data.marriageDate.getFullYear()},`, {
+  doc.text(`En el municipio de Santa María (Boyacá), a los ${data.marriageDate.getDate()} días del mes de ${getMonthName(data.marriageDate.getMonth())} del año ${data.marriageDate.getFullYear()}. Ante mí, Victor Cardenas, Párroco de esta Parroquia,`, {
     lineGap: 5
   });
-  doc.text('ante mí, Victor Cardenas, Párroco de esta Parroquia,', { lineGap: 5 });
-  doc.moveDown();
+  doc.moveDown(2);
   doc.font('Helvetica-Bold').text('CONTRAJERON MATRIMONIO CANÓNICO:', { color: '#1c4587' });
-  doc.moveDown();
+  doc.moveDown(2);
   
   doc.font('Helvetica-Bold').text('El contrayente:');
   doc.font('Helvetica-Bold').text('Nombres y Apellidos: ', { continued: true })
@@ -156,13 +153,13 @@ function generateMarriageContent(doc, data) {
 }
 
 function generateDeathContent(doc, data) {
-  doc.text(`En el municipio de Santa María (Boyacá), a los ${data.deathDate.getDate()} días del mes de ${getMonthName(data.deathDate.getMonth())} del año ${data.deathDate.getFullYear()},`, {
+  doc.text(`En el municipio de Santa María (Boyacá), a los ${data.deathDate.getDate()} días del mes de ${getMonthName(data.deathDate.getMonth())} del año ${data.deathDate.getFullYear()}. Yo, el infrascrito Victor Cardenas, Párroco de esta Parroquia,`, {
     lineGap: 5
   });
-  doc.text('yo, el infrascrito Victor Cardenas, Párroco de esta Parroquia,', { lineGap: 5 });
-  doc.moveDown();
+
+  doc.moveDown(2);
   doc.font('Helvetica-Bold').text('CERTIFICA QUE:', { color: '#1c4587' });
-  doc.moveDown();
+  doc.moveDown(2);
   
   doc.font('Helvetica-Bold').text('Nombres y Apellidos: ', { continued: true })
      .font('Helvetica').text(`${data.dead.name} ${data.dead.lastName}`);
