@@ -110,5 +110,47 @@ module.exports = {
         } catch (error) {
             res.status(500).json({ mensaje: "Error al confirmar la solicitud", error: error.message });
         }
+    },
+
+    deleteRequest: async (req, res) => {
+        try {
+            const { id } = req.params; // Asumiendo que el ID se pasa como parámetro en la URL
+
+            // Primero, obtenemos la solicitud para conocer la fecha y hora
+            const request = await RequestMass.findById(id);
+
+            if (!request) {
+                return res.status(404).json({ mensaje: "Solicitud no encontrada" });
+            }
+
+            // Eliminamos la solicitud
+            await RequestMass.findByIdAndDelete(id);
+
+            // Ahora, actualizamos el estado del horario en MassSchedule
+            const updatedSchedule = await MassSchedule.findOneAndUpdate(
+                { 
+                    date: request.date,
+                    "timeSlots.time": request.time
+                },
+                { 
+                    $set: {
+                        "timeSlots.$.available": true,
+                        "timeSlots.$.status": "Libre"
+                    }
+                },
+                { new: true }
+            );
+
+            if (!updatedSchedule) {
+                return res.status(404).json({ mensaje: "Horario de misa no encontrado" });
+            }
+
+            res.status(200).json({
+                mensaje: "Solicitud eliminada y horario actualizado exitosamente",
+                horarioActualizado: updatedSchedule
+            });
+        } catch (error) {
+            res.status(500).json({ mensaje: "Error al eliminar la solicitud", error: error.message });
+        }
     }
 };

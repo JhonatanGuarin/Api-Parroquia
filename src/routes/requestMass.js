@@ -6,7 +6,8 @@ const {
   createRequestMass,
   getPendingRequestMasses,
   getConfirmedRequestMasses,
-  confirmRequest
+  confirmRequest,
+  deleteRequest
   } = require('../controllers/controll-requestMass');
 
 // Crear una nueva solicitud de misa
@@ -19,5 +20,6 @@ router.get('/earring', getPendingRequestMasses);
 
 router.get('/confirmed', getConfirmedRequestMasses);
 
+router.delete('/:id', deleteRequest);
 
 module.exports = router;
