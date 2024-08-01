@@ -13,7 +13,7 @@ const {
 // Crear solicitud
 router.post('/', createRequestDeparture);
 
-router.post('/:requestId', sendDepartureDocument);
+router.post('/send/:requestId', sendDepartureDocument);
 
 router.get('/Sent', getAllRequestsSent);
 
