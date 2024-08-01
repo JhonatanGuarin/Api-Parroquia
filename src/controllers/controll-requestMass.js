@@ -71,12 +71,21 @@ module.exports = {
         }
     },
 
-    getAllRequestMasses : async (req, res) => {
+    getPendingRequestMasses: async (req, res) => {
         try {
-            const requestMasses = await RequestMass.find().populate('applicant');
-            res.status(200).json(requestMasses);
+            const pendingMasses = await RequestMass.find({ status: 'Pendiente' }).populate('applicant');
+            res.status(200).json(pendingMasses);
         } catch (error) {
-            res.status(500).json({ message: "Error fetching request masses", error: error.message });
+            res.status(500).json({ message: "Error fetching pending request masses", error: error.message });
+        }
+    },
+
+    getConfirmedRequestMasses: async (req, res) => {
+        try {
+            const confirmedMasses = await RequestMass.find({ status: 'Confirmada' }).populate('applicant');
+            res.status(200).json(confirmedMasses);
+        } catch (error) {
+            res.status(500).json({ message: "Error fetching confirmed request masses", error: error.message });
         }
     }
 };
