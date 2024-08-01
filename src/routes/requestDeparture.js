@@ -5,7 +5,8 @@ const {
     createRequestDeparture,
     getAllRequestsSent,
     getAllRequestsEarring,
-    sendDepartureDocument
+    sendDepartureDocument,
+    deleteRequestById
   } = require('../controllers/controll-requestDeparture');
 
 
@@ -18,5 +19,6 @@ router.get('/', getAllRequestsSent);
 
 router.get('/', getAllRequestsEarring);
 
+router.delete('/:id', deleteRequestById);
 
 module.exports = router

@@ -163,6 +163,21 @@ module.exports = {
           console.error('Error al procesar la solicitud de partida:', error);
           res.status(500).json({ message: 'Error al procesar la solicitud de partida', error: error.message });
       }
-  }
+  },
+
+  deleteRequestById: async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedRequest = await RequestDeparture.findByIdAndDelete(id);
+        
+        if (!deletedRequest) {
+            return res.status(404).json({ message: "Solicitud no encontrada" });
+        }
+        
+        res.json({ message: "Solicitud eliminada con éxito", deletedRequest });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+},
   
 }
