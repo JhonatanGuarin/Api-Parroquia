@@ -87,5 +87,28 @@ module.exports = {
         } catch (error) {
             res.status(500).json({ message: "Error fetching confirmed request masses", error: error.message });
         }
+    },
+
+    confirmRequest: async (req, res) => {
+        try {
+            const { id } = req.params; // Asumiendo que el ID se pasa como parámetro en la URL
+
+            const updatedRequest = await RequestMass.findByIdAndUpdate(
+                id,
+                { status: 'Confirmed' },
+                { new: true } // Esto hace que devuelva el documento actualizado
+            );
+
+            if (!updatedRequest) {
+                return res.status(404).json({ mensaje: "Solicitud no encontrada" });
+            }
+
+            res.status(200).json({
+                mensaje: "Solicitud confirmada exitosamente",
+                solicitud: updatedRequest
+            });
+        } catch (error) {
+            res.status(500).json({ mensaje: "Error al confirmar la solicitud", error: error.message });
+        }
     }
 };
