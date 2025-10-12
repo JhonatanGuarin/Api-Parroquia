@@ -24,12 +24,12 @@ exports.sendResetCode = async (mail, resetCode) => {
       </head>
       <body>
         <div class="container">
-          <h1>Recuperación de Contraseña</h1>
+          <h1>Recuperación de Contraseña para Parroquia la Sagrada Familia</h1>
           <p>Estimado usuario,</p>
           <p>Has solicitado un código para recuperar tu contraseña. Por favor, utiliza el siguiente código:</p>
           <div class="code">${resetCode}</div>
           <p>Si no has solicitado este código, por favor ignora este mensaje o contacta con nuestro soporte técnico.</p>
-          <p>Gracias,<br>Equipo de Parroquia de Santa Maria</p>
+          <p>Gracias,<br>Equipo de Parroquia la Sagrada Familia</p>
           <div class="footer">
             Este es un mensaje automático, por favor no responda a este correo.
           </div>
@@ -37,7 +37,7 @@ exports.sendResetCode = async (mail, resetCode) => {
       </body>
     </html>
   `;
-  sendSmtpEmail.sender = { name: "Parroquia de Santa Maria", email: process.env.FROM_EMAIL };
+  sendSmtpEmail.sender = { name: "Parroquia la Sagrada Familia", email: process.env.FROM_EMAIL };
   sendSmtpEmail.to = [{ email: mail }];
   
   try {
@@ -60,7 +60,7 @@ exports.sendVerifyCode = async (mail, resetCode) => {
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; }
           h1 { color: #2c3e50; text-align: center; }
-          .code { font-size: 24px; font-weight: bold; text-align: center; padding: 10px; background-color: #e74c3c; color: white; border-radius: 5px; }
+          .code { font-size: 24px; font-weight: bold; text-align: center; padding: 10px; background-color:rgb(7, 83, 4); color: white; border-radius: 5px; }
           .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #7f8c8d; }
         </style>
       </head>
@@ -68,10 +68,10 @@ exports.sendVerifyCode = async (mail, resetCode) => {
         <div class="container">
           <h1>Verificación de Correo</h1>
           <p>Estimado usuario,</p>
-          <p>Has solicitado un código para registrar una cuenta en la Parroquia Santa Maria. Por favor, utiliza el siguiente código:</p>
+          <p>Has solicitado un código para registrar una cuenta en la Parroquia la Sagrada Familia. Por favor, utiliza el siguiente código:</p>
           <div class="code">${resetCode}</div>
           <p>Si no has solicitado este código, por favor ignora este mensaje o contacta con nuestro soporte técnico.</p>
-          <p>Gracias,<br>Equipo de Parroquia de Santa Maria</p>
+          <p>Gracias,<br>Equipo de Parroquia la Sagrada Familia</p>
           <div class="footer">
             Este es un mensaje automático, por favor no responda a este correo.
           </div>
@@ -79,7 +79,7 @@ exports.sendVerifyCode = async (mail, resetCode) => {
       </body>
     </html>
   `;
-  sendSmtpEmail.sender = { name: "Parroquia de Santa Maria", email: process.env.FROM_EMAIL };
+  sendSmtpEmail.sender = { name: "Parroquia la Sagrada Familia", email: process.env.FROM_EMAIL };
   sendSmtpEmail.to = [{ email: mail }];
   
   try {
@@ -114,11 +114,11 @@ exports.sendDepartureDocument = async (requestData, departureData) => {
           <p>Estimado/a ${requestData.applicant.name},</p>
           <p>Adjunto encontrará su Partida de ${requestData.departureType} solicitada.</p>
           <p>Gracias por utilizar nuestros servicios.</p>
-          <p>Atentamente,<br>Parroquia Santa Maria</p>
+          <p>Atentamente,<br>Parroquia la Sagrada Familia</p>
         </body>
       </html>
     `;
-    sendSmtpEmail.sender = { name: "Parroquia de Santa Maria", email: process.env.FROM_EMAIL };
+    sendSmtpEmail.sender = { name: "Parroquia la Sagrada Familia", email: process.env.FROM_EMAIL };
     sendSmtpEmail.to = [{ email: requestData.applicant.mail }];
 
     // Lee el contenido del archivo PDF y convierte a base64
