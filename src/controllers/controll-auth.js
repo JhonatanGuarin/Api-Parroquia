@@ -229,21 +229,32 @@ module.exports = {
     // Función para cambiar la contraseña
     changePassword: async (req, res) => {
         try {
-            const { mail, newPassword } = req.body;
-            const user = await User.findOne({ mail });
-
+            const { mail, resetCode, newPassword } = req.body; // 👈 Agregar resetCode
+    
+            // 👇 Validar que el código sea válido
+            const user = await User.findOne({
+                mail,
+                resetCode,
+                resetCodeExpires: { $gt: Date.now() }
+            });
+    
             if (!user) {
-                return res.status(404).json({ message: 'Usuario no encontrado' });
+                return res.status(400).json({ message: 'Código inválido o expirado' });
             }
-
+    
+            // Validar longitud de contraseña
+            if (newPassword.length < 8) {
+                return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
+            }
+    
             // Encriptación de la nueva contraseña
             const passwordHash = await encrypt(newPassword);
-
+    
             user.password = passwordHash;
             user.resetCode = undefined;
             user.resetCodeExpires = undefined;
             await user.save();
-
+    
             res.status(200).json({ message: 'Contraseña actualizada exitosamente' });
         } catch (error) {
             res.status(500).json({ message: 'Error en el servidor', error: error.message });
