@@ -14,8 +14,7 @@ app.set('PORT', process.env.PORT || 3000);
 // ✅ ACTUALIZADO: CORS configurado para cookies
 app.use(cors({
   origin: [
-    'https://localhost:3000',  // Tu frontend en desarrollo
-    'https://localhost:3001',  // Por si usas otro puerto
+    'http://localhost:3000',  // Por si usas otro puerto
     'https://tu-dominio-frontend.com' // Tu dominio en producción
   ],
   credentials: true, // 👈 IMPORTANTE: Permite enviar y recibir cookies
