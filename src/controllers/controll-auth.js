@@ -38,6 +38,9 @@ module.exports = {
         }
     },
 
+
+
+    
     verifyCode: async (req, res) => {
         try {
             const { mail, verificationCode } = req.body;
