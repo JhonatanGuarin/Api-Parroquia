@@ -138,7 +138,15 @@ module.exports = {
     
             // JWT 
             const tokenSession = await tokenSign(user);
-    
+
+            // Establecer el token como una cookie HTTP-only
+            res.cookie('jwt', tokenSession, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production', // Usar secure en producción
+                sameSite: 'Lax',
+                maxAge: 3600000 // 1 hora, ajusta según necesidad
+            });
+
             // Omitir la contraseña en la respuesta
             const userResponse = user.toObject();
             delete userResponse.password;
@@ -146,7 +154,6 @@ module.exports = {
             return res.status(200).json({
                 message: 'Login successful',
                 data: userResponse,
-                tokenSession
             });
     
         } catch (err) {
