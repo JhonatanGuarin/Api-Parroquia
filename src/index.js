@@ -20,7 +20,7 @@ app.use(cors({
   ],
   credentials: true, // 👈 IMPORTANTE: Permite enviar y recibir cookies
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization','Cookie']
 }));
 
 // Middlewares

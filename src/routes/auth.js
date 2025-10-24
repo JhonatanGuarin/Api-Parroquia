@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-const { loginUser, verifyEmail, verifyCode, registerUser, forgotPassword, verifyResetCode, changePassword } = require('../controllers/controll-auth')
+const { loginUser, logoutUser, verifyEmail, verifyCode, registerUser, forgotPassword, verifyResetCode, changePassword } = require('../controllers/controll-auth')
 
 //Login !
 router.post('/login', loginUser)
+router.post('/logout', logoutUser)
 
 router.post('/forgot-password', forgotPassword);
 router.post('/verify-ResetCode', verifyResetCode);
