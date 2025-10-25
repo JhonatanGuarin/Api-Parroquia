@@ -40,7 +40,7 @@ module.exports = {
 
 
 
-    
+
     verifyCode: async (req, res) => {
         try {
             const { mail, verificationCode } = req.body;
@@ -145,8 +145,10 @@ module.exports = {
             // Establecer el token como una cookie HTTP-only
             res.cookie('jwt', tokenSession, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Usar secure en producción
-                sameSite: 'Lax',
+                // ✅ CAMBIO CLAVE: Usar SameSite: 'None' en desarrollo para cross-site
+                // Requiere secure: true incluso en desarrollo si SameSite es 'None'
+                secure: process.env.NODE_ENV === 'production' || process.env.ALLOW_INSECURE_COOKIES_DEV === 'true', // O true si tu dev es HTTPS, o una variable de entorno para forzarlo
+                sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'None', // 'Lax' para producción, 'None' para desarrollo cross-site
                 maxAge: 3600000 // 1 hora, ajusta según necesidad
             });
 
@@ -233,31 +235,31 @@ module.exports = {
     changePassword: async (req, res) => {
         try {
             const { mail, resetCode, newPassword } = req.body; // 👈 Agregar resetCode
-    
+
             // 👇 Validar que el código sea válido
             const user = await User.findOne({
                 mail,
                 resetCode,
                 resetCodeExpires: { $gt: Date.now() }
             });
-    
+
             if (!user) {
                 return res.status(400).json({ message: 'Código inválido o expirado' });
             }
-    
+
             // Validar longitud de contraseña
             if (newPassword.length < 8) {
                 return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
             }
-    
+
             // Encriptación de la nueva contraseña
             const passwordHash = await encrypt(newPassword);
-    
+
             user.password = passwordHash;
             user.resetCode = undefined;
             user.resetCodeExpires = undefined;
             await user.save();
-    
+
             res.status(200).json({ message: 'Contraseña actualizada exitosamente' });
         } catch (error) {
             res.status(500).json({ message: 'Error en el servidor', error: error.message });
