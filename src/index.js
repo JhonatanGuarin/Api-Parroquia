@@ -14,13 +14,18 @@ app.set('PORT', process.env.PORT || 3000);
 // ✅ ACTUALIZADO: CORS configurado para cookies
 app.use(cors({
   origin: [
-    'http://localhost:3000',  // Por si usas otro puerto
-    'https://tu-dominio-frontend.com' // Tu dominio en producción
+    'http://localhost:3000',
+    'http://localhost:3001', // Si usas otro puerto
+    'https://tu-dominio-frontend.vercel.app', // 👈 AGREGA TU DOMINIO REAL DE FRONTEND
+    'https://tu-dominio-frontend.com'
   ],
-  credentials: true, // 👈 IMPORTANTE: Permite enviar y recibir cookies
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization','Cookie']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
+
+// 👇 Agrega esto también
+app.options('*', cors()); // Habilita preflight para todas las rutas
 
 // Middlewares
 app.use(morgan('dev'))

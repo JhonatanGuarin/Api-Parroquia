@@ -140,17 +140,12 @@ module.exports = {
             }
 
             // JWT 
-            const tokenSession = await tokenSign(user);
-
             res.cookie('jwt', tokenSession, {
                 httpOnly: true,
-                // ✅ CAMBIO CLAVE PARA DESARROLLO (frontend HTTP local -> backend HTTPS)\n
-                // EN DESARROLLO (NODE_ENV !== \'production\'): secure=false.
-                // Esto permite que el navegador envíe la cookie desde http://localhost.
-                // EN PRODUCCIÓN: secure=true. NUNCA DEJAR secure=false EN PRODUCCIÓN.\n
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'None', // 'Lax' para producción, 'None' para desarrollo cross-site
-                maxAge: 3600000 // 1 hora, ajusta según necesidad
+                secure: process.env.NODE_ENV === 'production', // true en producción
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 👈 'none' en producción para CORS
+                maxAge: 3600000,
+                domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined // 👈 Importante para subdominios
             });
 
             // Omitir la contraseña en la respuesta
