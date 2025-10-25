@@ -142,11 +142,14 @@ module.exports = {
             // JWT 
             const tokenSession = await tokenSign(user);
 
-            // Establecer el token como una cookie HTTP-only
             res.cookie('jwt', tokenSession, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production' || process.env.COOKIE_SECURE_DEV === 'true', // Asegura que secure sea true en desarrollo también
-                sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'None',
+                // ✅ CAMBIO CLAVE PARA DESARROLLO (frontend HTTP local -> backend HTTPS)\n
+                // EN DESARROLLO (NODE_ENV !== \'production\'): secure=false.
+                // Esto permite que el navegador envíe la cookie desde http://localhost.
+                // EN PRODUCCIÓN: secure=true. NUNCA DEJAR secure=false EN PRODUCCIÓN.\n
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'None', // 'Lax' para producción, 'None' para desarrollo cross-site
                 maxAge: 3600000 // 1 hora, ajusta según necesidad
             });
 
