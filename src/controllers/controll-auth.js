@@ -145,10 +145,8 @@ module.exports = {
             // Establecer el token como una cookie HTTP-only
             res.cookie('jwt', tokenSession, {
                 httpOnly: true,
-                // ✅ CAMBIO CLAVE: Usar SameSite: 'None' en desarrollo para cross-site
-                // Requiere secure: true incluso en desarrollo si SameSite es 'None'
-                secure: process.env.NODE_ENV === 'production' || process.env.ALLOW_INSECURE_COOKIES_DEV === 'true', // O true si tu dev es HTTPS, o una variable de entorno para forzarlo
-                sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'None', // 'Lax' para producción, 'None' para desarrollo cross-site
+                secure: process.env.NODE_ENV === 'production' || process.env.COOKIE_SECURE_DEV === 'true', // Asegura que secure sea true en desarrollo también
+                sameSite: process.env.NODE_ENV === 'production' ? 'Lax' : 'None',
                 maxAge: 3600000 // 1 hora, ajusta según necesidad
             });
 
